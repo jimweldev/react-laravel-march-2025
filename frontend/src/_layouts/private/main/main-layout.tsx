@@ -31,14 +31,14 @@ const MainLayout = () => {
       />
 
       {/* main */}
-      <div className="xs:min-w-auto flex min-w-screen flex-1 flex-col overflow-hidden">
+      <div className="flex min-w-screen flex-1 flex-col overflow-hidden sm:min-w-0">
         {/* navbar */}
         <Navbar
           isSidebarCollapsed={isSidebarCollapsed}
           setIsSidebarCollapsed={setIsSidebarCollapsed}
         />
 
-        <main className="main flex-1 overflow-y-auto">
+        <main className="main flex-1 overflow-x-hidden overflow-y-auto break-words">
           <div className="p-6">
             <Outlet />
           </div>

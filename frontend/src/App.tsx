@@ -4,6 +4,7 @@ import ExamplesLayout from './_layouts/private/examples/examples-layout';
 import MainLayout from './_layouts/private/main/main-layout';
 import PrivateLayout from './_layouts/private/private-layout';
 import PublicLayout from './_layouts/public/public-layout';
+import UsersPage from './_pages/private/admin/users-page';
 import ButtonsPage from './_pages/private/examples/buttons-page';
 import CardsPage from './_pages/private/examples/cards-page';
 import EditorPage from './_pages/private/examples/editor-page';
@@ -11,7 +12,7 @@ import InputsPage from './_pages/private/examples/inputs-page';
 import CardTabsPage from './_pages/private/examples/tabs/card-tabs-page';
 import PageTabsPage from './_pages/private/examples/tabs/page-tabs-page';
 import TextsPage from './_pages/private/examples/texts-page';
-import LoginPage from './_pages/public/login-page';
+import LoginPage from './_pages/public/login/login-page';
 import useAuthUserStore from './_stores/auth-user.store';
 
 const App = () => {
@@ -60,6 +61,10 @@ const App = () => {
             {
               index: true,
               element: <h1>Admin</h1>,
+            },
+            {
+              path: 'users',
+              element: <UsersPage />,
             },
           ],
         },

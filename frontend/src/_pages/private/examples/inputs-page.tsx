@@ -11,9 +11,6 @@ const InputsPage = () => {
 
       {/* small input - example */}
       <Input inputSize="sm" />
-
-      {/* extra small input - example */}
-      <Input inputSize="xs" />
     </div>
   );
 };

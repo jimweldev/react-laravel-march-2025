@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import GoogleLogin from './_components/google-login';
 
 const FormSchema = z.object({
   email: z
@@ -132,9 +133,7 @@ const LoginPage = () => {
                     </span>
                   </div>
 
-                  <Button variant="outline" className="w-full" type="button">
-                    Continue with Google
-                  </Button>
+                  <GoogleLogin />
                 </div>
               </form>
             </Form>

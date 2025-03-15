@@ -1,21 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { User } from '@/_types/user';
 
-// Define the user type
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface AuthUserState {
+interface AuthUserStoreProps {
   user: User | null;
   token: string | null;
   setAuthUser: (user: User, token: string) => void;
   clearAuthUser: () => void;
 }
 
-const useAuthUserStore = create<AuthUserState>()(
+const useAuthUserStore = create<AuthUserStoreProps>()(
   persist(
     set => ({
       user: null,

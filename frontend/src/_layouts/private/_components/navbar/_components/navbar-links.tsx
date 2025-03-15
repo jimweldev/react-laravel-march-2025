@@ -35,7 +35,11 @@ const NavbarLinks = () => {
       <div className="sm:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button
+              className="data-[state=open]:bg-primary data-[state=open]:text-primary-foreground"
+              variant="ghost"
+              size="icon"
+            >
               <CgMenuGridO />
             </Button>
           </DropdownMenuTrigger>

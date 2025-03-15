@@ -1,9 +1,8 @@
-import * as React from "react";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { XIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "./scroll-area";
+import * as React from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { XIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { ScrollArea } from './scroll-area';
 
 function Dialog({
   ...props
@@ -37,8 +36,8 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/80 overflow-hidden",
-        className
+        'fixed inset-0 z-50 overflow-hidden bg-black/80',
+        className,
       )}
       {...props}
     />
@@ -58,12 +57,12 @@ function DialogContent({
             <DialogPrimitive.Content
               data-slot="dialog-content"
               className={cn(
-                "max-w-[450px]",
-                "bg-card border shadow-lg w-full rounded-lg",
-                "relative z-50",
-                className
+                'max-w-[450px]',
+                'bg-card w-full rounded-lg border shadow-lg',
+                'relative z-50',
+                className,
               )}
-              onOpenAutoFocus={(e) => e.preventDefault()}
+              onOpenAutoFocus={e => e.preventDefault()}
               {...props}
             >
               {children}
@@ -79,21 +78,27 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("border-b p-3", className)}
+      className={cn('border-b p-3', className)}
       {...props}
     />
   );
 }
 
-function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
+function DialogBody({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div data-slot="dialog-body" className={cn('p-3', className)} {...props} />
+  );
+}
+
+function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn("p-3 border-t", className)}
+      className={cn('border-t p-3', className)}
       {...props}
     />
   );
@@ -106,7 +111,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn('text-lg leading-none font-semibold', className)}
       {...props}
     />
   );
@@ -119,7 +124,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn('text-muted-foreground text-sm', className)}
       {...props}
     />
   );
@@ -132,6 +137,7 @@ export {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogBody,
   DialogOverlay,
   DialogPortal,
   DialogTitle,

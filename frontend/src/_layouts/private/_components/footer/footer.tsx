@@ -8,10 +8,10 @@ const Footer = () => {
       </p>
 
       <div className="flex items-center gap-2">
-        <Button variant="link" size="xs">
+        <Button variant="link" size="sm">
           Support
         </Button>
-        <Button variant="link" size="xs">
+        <Button variant="link" size="sm">
           Help Center
         </Button>
       </div>
