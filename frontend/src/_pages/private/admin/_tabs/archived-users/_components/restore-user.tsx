@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { CircleAlert } from 'lucide-react';
+import { CircleHelp } from 'lucide-react';
 import { toast } from 'sonner';
 import { User } from '@/_types/user';
 import DialogDeleteSkeleton from '@/components/skeletons/dialog-delete-skeleton';
@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { mainInstance } from '@/instances/main-instance';
 
-type DeleteUserProps = {
+type RestoreUserProps = {
   selectedItem: User | null;
   setSelectedItem: React.Dispatch<React.SetStateAction<User | null>>;
   open: boolean;
@@ -23,14 +23,14 @@ type DeleteUserProps = {
   refetch: () => void;
 };
 
-const DeleteUser = ({
+const RestoreUser = ({
   selectedItem,
   setSelectedItem,
   open,
   setOpen,
   refetch,
-}: DeleteUserProps) => {
-  const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(false);
+}: RestoreUserProps) => {
+  const [isLoadingRestoreItem, setIsLoadingRestoreItem] = useState(false);
 
   const {
     isFetching,
@@ -39,7 +39,9 @@ const DeleteUser = ({
   } = useQuery<User>({
     queryKey: ['users', selectedItem?.id],
     queryFn: async (): Promise<User> => {
-      const res = await mainInstance.get(`/api/users/${selectedItem?.id}`);
+      const res = await mainInstance.get(
+        `/api/users/${selectedItem?.id}/archived`,
+      );
       return res.data;
     },
     enabled: false,
@@ -55,25 +57,30 @@ const DeleteUser = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setIsLoadingDeleteItem(true);
+    setIsLoadingRestoreItem(true);
 
-    toast.promise(mainInstance.delete(`/api/users/${selectedItem?.id}`), {
-      loading: 'Loading...',
-      success: () => {
-        refetch();
-        setSelectedItem(null);
-        setOpen(false);
-        return 'User deleted successfully';
+    toast.promise(
+      mainInstance.post(`/api/users/${selectedItem?.id}/archived/restore`),
+      {
+        loading: 'Loading...',
+        success: () => {
+          refetch();
+          setOpen(false);
+          setSelectedItem(null);
+          return 'User restored successfully';
+        },
+        error: error => {
+          return (
+            error.response?.data?.message ||
+            error.message ||
+            'An error occurred'
+          );
+        },
+        finally: () => {
+          setIsLoadingRestoreItem(false);
+        },
       },
-      error: error => {
-        return (
-          error.response?.data?.message || error.message || 'An error occurred'
-        );
-      },
-      finally: () => {
-        setIsLoadingDeleteItem(false);
-      },
-    });
+    );
   };
 
   return (
@@ -96,13 +103,13 @@ const DeleteUser = ({
               <DialogDescription />
               <DialogBody>
                 <div>
-                  <CircleAlert
-                    className="mx-auto mb-4 text-red-500"
+                  <CircleHelp
+                    className="mx-auto mb-4 text-yellow-400"
                     size={64}
                   />
-                  <h3 className="text-center text-xl">Delete User</h3>
+                  <h3 className="text-center text-xl">Restore User</h3>
                   <p className="mb-2 text-center text-slate-600">
-                    Are you sure you want to delete this user?
+                    Are you sure you want to restore this user?
                   </p>
 
                   <h2 className="text-center text-2xl font-semibold">
@@ -119,11 +126,11 @@ const DeleteUser = ({
                   Close
                 </Button>
                 <Button
-                  variant="destructive"
+                  variant="warning"
                   type="submit"
-                  disabled={isLoadingDeleteItem}
+                  disabled={isLoadingRestoreItem}
                 >
-                  Delete
+                  Restore
                 </Button>
               </DialogFooter>
             </>
@@ -134,4 +141,4 @@ const DeleteUser = ({
   );
 };
 
-export default DeleteUser;
+export default RestoreUser;

@@ -5,80 +5,81 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(97.58% 0.0057 264.53);
-  --foreground: oklch(0.22 0.08 270);
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(240 10% 3.9%);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.08 270);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(240 10% 3.9%);
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.08 270);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(240 10% 3.9%);
 
-  --primary: oklch(59.6% 0.1612 258.05);
-  --primary-foreground: oklch(100% 0 0);
-  --secondary: oklch(55.75% 0.0165 244.89);
-  --secondary-foreground: oklch(100% 0 0);
-  --muted: oklch(0.94 0.01 230);
-  --muted-foreground: oklch(0.6 0.03 250);
-  --accent: oklch(0.94 0.01 230);
-  --accent-foreground: oklch(0.3 0.05 270);
-  --destructive: oklch(0.53 0.3 354);
-  --destructive-foreground: oklch(100% 0 0);
+  --primary: hsl(217, 66%, 55%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 6%, 45%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(240 4.8% 95.9%);
+  --muted-foreground: hsl(240 3.8% 46.1%);
+  --accent: hsl(240 4.8% 95.9%);
+  --accent-foreground: hsl(240 5.9% 10%);
+  --destructive: hsl(354, 70%, 52%);
+  --destructive-foreground: hsl(0, 0%, 100%);
 
-  --border: oklch(0.89 0.02 250);
-  --input: oklch(0.89 0.02 250);
-  --ring: oklch(0.65 0.2 270);
+  --border: hsl(240 5.9% 90%);
+  --input: hsl(240 5.9% 90%);
+  --ring: hsl(240 5.9% 10%);
+
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+
   --radius: 0.5rem;
-
-  --chart-1: oklch(0.75 0.18 50);
-  --chart-2: oklch(0.6 0.14 160);
-  --chart-3: oklch(0.45 0.08 200);
-  --chart-4: oklch(0.8 0.2 90);
-  --chart-5: oklch(0.82 0.22 80);
 }
 
 .dark {
-  --background: oklch(24.8% 0.0231 251.41);
-  --foreground: oklch(0.98 0.01 230);
+  --background: hsl(240 10% 3.9%);
+  --foreground: hsl(0 0% 98%);
 
-  --card: oklch(29.66% 0.0304 252.67);
-  --card-foreground: oklch(87.23% 0.0047 258.33);
+  --card: hsl(240 10% 3.9%);
+  --card-foreground: hsl(0 0% 98%);
 
-  --popover: oklch(0.22 0.08 270);
-  --popover-foreground: oklch(0.98 0.01 230);
+  --popover: hsl(240 10% 3.9%);
+  --popover-foreground: hsl(0 0% 98%);
 
-  --primary: oklch(59.6% 0.1612 258.05);
-  --primary-foreground: oklch(100% 0 0);
-  --secondary: oklch(60.26% 0.0154 248.08);
-  --secondary-foreground: oklch(100% 0 0);
-  --muted: oklch(0.94 0.01 230);
-  --muted-foreground: oklch(0.6 0.03 250);
-  --accent: oklch(0.94 0.01 230);
-  --accent-foreground: oklch(0.3 0.05 270);
-  --destructive: oklch(0.53 0.3 354);
-  --destructive-foreground: oklch(100% 0 0);
+  --primary: hsl(217, 66%, 55%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 6%, 45%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 5% 64.9%);
+  --accent: hsl(240 3.7% 15.9%);
+  --accent-foreground: hsl(0 0% 98%);
+  --destructive: hsl(354, 70%, 52%);
+  --destructive-foreground: hsl(0, 0%, 100%);
 
-  --border: oklch(0.3 0.05 250);
-  --input: oklch(0.3 0.05 250);
-  --ring: oklch(0.6 0.2 260);
+  --border: hsl(240 3.7% 15.9%);
+  --input: hsl(240 3.7% 15.9%);
+  --ring: hsl(240 4.9% 83.9%);
 
-  --chart-1: oklch(0.65 0.18 240);
-  --chart-2: oklch(0.55 0.15 150);
-  --chart-3: oklch(0.7 0.22 60);
-  --chart-4: oklch(0.72 0.19 300);
-  --chart-5: oklch(0.65 0.22 350);
+  --chart-1: hsl(220 70% 50%);
+  --chart-2: hsl(160 60% 45%);
+  --chart-3: hsl(30 80% 55%);
+  --chart-4: hsl(280 65% 60%);
+  --chart-5: hsl(340 75% 55%);
 }
 
 :root {
-  --success: oklch(70.49% 0.1407 166.28);
-  --success-foreground: oklch(100% 0 0);
-  --warning: oklch(82.69% 0.1605 80.21);
-  --warning-foreground: oklch(100% 0 0);
-  --info: oklch(65.52% 0.1105 212.17);
-  --info-foreground: oklch(100% 0 0);
+  --success: hsl(161, 74%, 42%);
+  --success-foreground: hsl(0, 0%, 100%);
+  --warning: hsl(41, 97%, 57%);
+  --warning-foreground: hsl(0, 0%, 100%);
+  --info: hsl(188, 76%, 41%);
+  --info-foreground: hsl(0, 0%, 100%);
 
-  --sidebar: oklch(47.39% 0.1412 252.87);
-  --sidebar-foreground: oklch(100% 0 0);
+  --sidebar: hsl(217, 66%, 55%);
+  --sidebar-foreground: hsl(0, 0%, 100%);
   --sidebar-primary: oklch(86.06% 0.1731 91.94);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
@@ -88,12 +89,12 @@
 }
 
 .dark {
-  --success: oklch(70.49% 0.1407 166.28);
-  --success-foreground: oklch(100% 0 0);
-  --warning: oklch(82.69% 0.1605 80.21);
-  --warning-foreground: oklch(100% 0 0);
-  --info: oklch(65.52% 0.1105 212.17);
-  --info-foreground: oklch(100% 0 0);
+  --success: hsl(161, 74%, 42%);
+  --success-foreground: hsl(0, 0%, 100%);
+  --warning: hsl(41, 97%, 57%);
+  --warning-foreground: hsl(0, 0%, 100%);
+  --info: hsl(188, 76%, 41%);
+  --info-foreground: hsl(0, 0%, 100%);
 
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
@@ -202,8 +203,21 @@ main.main::-webkit-scrollbar-thumb {
   @apply bg-border;
 }
 
+/* vertical scrollbar */
+div.vertical-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+div.vertical-scrollbar::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  border-radius: 9999px;
+  @apply bg-border;
+}
+
+/* horizontal scrollbar */
 div.horizontal-scrollbar::-webkit-scrollbar {
-  height: 10px; /* Add this for horizontal scrollbar */
+  height: 10px;
 }
 
 div.horizontal-scrollbar::-webkit-scrollbar-thumb {

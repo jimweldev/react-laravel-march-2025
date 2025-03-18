@@ -3,14 +3,14 @@
     • [/] border-b/t for header and footer
     • [/] spacing p-3
     • [/] remove auto focus
-    • [x] animate
+    • [/] animate
 
 • alert dialog
     • [/] scrollable 
     • [/] border-b/t for header and footer
     • [/] spacing p-3
     • [/] remove auto focus
-    • [x] animate
+    • [/] animate
 
 • colors
     • [/] success
@@ -29,7 +29,7 @@
 
 • inputs
     • [/] size
-    • [] input group
+    • [/] input group
 
 • layouts
     • [/] main layout
@@ -44,6 +44,9 @@
 • texts
     • [/] page header
     • [/] form header
+
+• theme
+    • [/] dark/light mode
 
 • CRUD
     • [] create

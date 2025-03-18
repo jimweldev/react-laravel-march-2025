@@ -1,3 +1,5 @@
+import VerticalScrollbar from '@/components/scrollbars/vertical-scrollbar';
+import ThemeToggle from '@/components/theme/theme-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import SidebarLink from './_components/sidebar-link';
 import SidebarSubLink from './_components/sidebar-sub-link';
@@ -29,7 +31,8 @@ const Sidebar = ({ isSidebarCollapsed, sidebarSections }: SidebarProps) => {
         isSidebarCollapsed ? 'ml-0 lg:ml-[-250px]' : 'ml-[-250px] lg:ml-0'
       }`}
     >
-      <ScrollArea className="h-full">
+      {/* <ScrollArea className="h-full"> */}
+      <VerticalScrollbar>
         <h4 className="p-3 text-center text-2xl font-semibold">
           {import.meta.env.VITE_APP_NAME}
         </h4>
@@ -62,7 +65,9 @@ const Sidebar = ({ isSidebarCollapsed, sidebarSections }: SidebarProps) => {
             ))}
           </div>
         ))}
-      </ScrollArea>
+        <ThemeToggle />
+      </VerticalScrollbar>
+      {/* </ScrollArea> */}
     </div>
   );
 };

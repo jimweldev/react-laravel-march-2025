@@ -64,7 +64,16 @@ const App = () => {
             },
             {
               path: 'users',
-              element: <UsersPage />,
+              children: [
+                {
+                  index: true,
+                  element: <UsersPage />,
+                },
+                {
+                  path: ':userTab',
+                  element: <UsersPage />,
+                },
+              ],
             },
           ],
         },

@@ -27,8 +27,8 @@ const DialogSkeleton = ({
       <DialogBody>
         <div className="grid grid-cols-12 gap-3">
           {[...Array(inputCount)].map((_, index) => (
-            <div className="col-span-12 space-y-1">
-              <div key={index} className="space-y-1">
+            <div className="col-span-12 space-y-1" key={index}>
+              <div className="space-y-1">
                 <Skeleton className="h-3.5 w-[20%]" />
                 <Skeleton className="h-9 w-[100%]" />
               </div>

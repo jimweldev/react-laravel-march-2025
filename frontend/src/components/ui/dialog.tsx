@@ -37,6 +37,8 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={cn(
         'fixed inset-0 z-50 overflow-hidden bg-black/80',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out',
+        'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         className,
       )}
       {...props}
@@ -57,9 +59,12 @@ function DialogContent({
             <DialogPrimitive.Content
               data-slot="dialog-content"
               className={cn(
-                'max-w-[450px]',
-                'bg-card w-full rounded-lg border shadow-lg',
-                'relative z-50',
+                'bg-card relative z-50 w-full max-w-[450px] rounded-lg border shadow-lg',
+                'data-[state=open]:animate-in data-[state=closed]:animate-out',
+                'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+                'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+                'data-[state=closed]:slide-out-to-top-[48%]',
+                'data-[state=open]:slide-in-from-top-[48%]',
                 className,
               )}
               onOpenAutoFocus={e => e.preventDefault()}

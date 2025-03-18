@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useDebouncedState } from '@mantine/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { FaEdit } from 'react-icons/fa';
-import { FaBoxArchive } from 'react-icons/fa6';
+import { FaHistory } from 'react-icons/fa';
 import { PaginatedRecords } from '@/_types/common/paginated-records';
 import { User } from '@/_types/user';
 import DataTable from '@/components/data-tables/data-table';
@@ -16,12 +15,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { mainInstance } from '@/instances/main-instance';
-import CreateUser from './_components/create-user';
-import DeleteUser from './_components/delete-user';
-import ImportUsers from './_components/import-users';
-import UpdateUser from './_components/update-user';
+import RestoreUser from './_components/restore-user';
 
-const ActiveUsersTab = () => {
+const ArchivedUsersTab = () => {
   // PAGINATION
   const [limit, setLimit] = useState<string>('10');
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -35,10 +31,10 @@ const ActiveUsersTab = () => {
     data: users,
     refetch: refetchUsers,
   } = useQuery<PaginatedRecords<User>>({
-    queryKey: ['users/paginate', searchTerm, limit, currentPage, sort],
+    queryKey: ['users/archived/paginate', searchTerm, limit, currentPage, sort],
     queryFn: async (): Promise<PaginatedRecords<User>> => {
       const res = await mainInstance.get(
-        `/api/users/paginate?search=${searchTerm}&limit=${limit}&page=${currentPage}&sort=${sort}`,
+        `/api/users/archived/paginate?search=${searchTerm}&limit=${limit}&page=${currentPage}&sort=${sort}`,
       );
       return res.data;
     },
@@ -48,10 +44,7 @@ const ActiveUsersTab = () => {
   // MODAL STATES
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
-  const [openUpdateUser, setOpenUpdateUser] = useState<boolean>(false);
-  const [openDeleteUser, setOpenDeleteUser] = useState<boolean>(false);
-  const [openImportUsers, setOpenImportUsers] = useState<boolean>(false);
+  const [openRestoreUser, setOpenRestoreUser] = useState<boolean>(false);
 
   // TABLE HEADER
   const DataTableHeader = (
@@ -76,27 +69,6 @@ const ActiveUsersTab = () => {
     </TableHeader>
   );
 
-  // ACTIONS
-  const Actions = (
-    <div className="space-x-2">
-      <Button
-        size="sm"
-        onClick={() => {
-          setOpenCreateUser(true);
-        }}
-      >
-        Create
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setOpenImportUsers(true)}
-      >
-        Import
-      </Button>
-    </div>
-  );
-
   return (
     <>
       <DataTable
@@ -112,7 +84,6 @@ const ActiveUsersTab = () => {
         error={error}
         info={users?.info}
         header={DataTableHeader}
-        actions={Actions}
       >
         {!error && users
           ? users.records?.map((user: User) => (
@@ -128,24 +99,14 @@ const ActiveUsersTab = () => {
                 <TableCell>
                   <InputGroup size="sm">
                     <Button
-                      variant="info"
+                      variant="warning"
                       onClick={() => {
                         setSelectedUser(user);
-                        setOpenUpdateUser(true);
+                        setOpenRestoreUser(true);
                       }}
                       size="xs"
                     >
-                      <FaEdit />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        setSelectedUser(user);
-                        setOpenDeleteUser(true);
-                      }}
-                      size="xs"
-                    >
-                      <FaBoxArchive />
+                      <FaHistory />
                     </Button>
                   </InputGroup>
                 </TableCell>
@@ -154,33 +115,15 @@ const ActiveUsersTab = () => {
           : null}
       </DataTable>
 
-      {/* modals */}
-      <CreateUser
-        open={openCreateUser}
-        setOpen={setOpenCreateUser}
-        refetch={refetchUsers}
-      />
-      <UpdateUser
+      <RestoreUser
         selectedItem={selectedUser}
         setSelectedItem={setSelectedUser}
-        open={openUpdateUser}
-        setOpen={setOpenUpdateUser}
-        refetch={refetchUsers}
-      />
-      <DeleteUser
-        selectedItem={selectedUser}
-        setSelectedItem={setSelectedUser}
-        open={openDeleteUser}
-        setOpen={setOpenDeleteUser}
-        refetch={refetchUsers}
-      />
-      <ImportUsers
-        open={openImportUsers}
-        setOpen={setOpenImportUsers}
+        open={openRestoreUser}
+        setOpen={setOpenRestoreUser}
         refetch={refetchUsers}
       />
     </>
   );
 };
 
-export default ActiveUsersTab;
+export default ArchivedUsersTab;

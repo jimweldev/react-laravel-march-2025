@@ -64,7 +64,7 @@ const LoginPage = () => {
     //   },
     // });
     setAuthUser(
-      { id: 1, name: 'John Doe', email: 'Ry6mG@example.com' },
+      { id: 1, first_name: 'John', email: 'Ry6mG@example.com' },
       'token',
     );
   };

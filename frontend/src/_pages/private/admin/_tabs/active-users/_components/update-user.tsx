@@ -139,7 +139,9 @@ const UpdateUser = ({
       open={open}
       onOpenChange={() => {
         setOpen(false);
-        setSelectedItem(null);
+        setTimeout(() => {
+          setSelectedItem(null);
+        }, 200);
       }}
     >
       <DialogContent onOpenAutoFocus={e => e.preventDefault()}>

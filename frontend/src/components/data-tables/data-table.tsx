@@ -54,7 +54,7 @@ const DataTable = <T,>({
   return (
     <div className="space-y-3">
       <div className="flex flex-col items-center justify-between gap-2 @xl/main:flex-row">
-        {actions && <div>{actions}</div>}
+        {actions ? <div>{actions}</div> : <div />}
         <div className="flex flex-col items-center justify-between gap-2 @lg/main:flex-row">
           <Input
             placeholder="Search..."
