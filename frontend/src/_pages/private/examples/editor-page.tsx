@@ -7,7 +7,10 @@ const EditorPage = () => {
   return (
     <div>
       <ReactQuillEditor value={value} onChange={setValue} />
-      <div dangerouslySetInnerHTML={{ __html: value }} />
+      <div
+        className="react-quill-content"
+        dangerouslySetInnerHTML={{ __html: value }}
+      />
     </div>
   );
 };

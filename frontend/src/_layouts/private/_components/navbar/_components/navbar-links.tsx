@@ -11,7 +11,7 @@ import {
 
 const NavbarLinks = () => {
   const location = useLocation();
-  const excludedPaths = ['/admin', '/examples', '/profile'];
+  const excludedPaths = ['/admin', '/examples', '/settings'];
   const isExcluded = excludedPaths.some(path =>
     location.pathname.startsWith(path),
   );

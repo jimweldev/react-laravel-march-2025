@@ -7,7 +7,7 @@ const ThemeToggle = () => {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
       {theme === 'light' ? <FaMoon /> : <FaSun />}

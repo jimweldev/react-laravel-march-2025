@@ -1,8 +1,9 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import AdminLayout from './_layouts/private/admin/admin-layout';
 import ExamplesLayout from './_layouts/private/examples/examples-layout';
 import MainLayout from './_layouts/private/main/main-layout';
 import PrivateLayout from './_layouts/private/private-layout';
+import SettingsLayout from './_layouts/private/settings/settings-layout';
 import PublicLayout from './_layouts/public/public-layout';
 import UsersPage from './_pages/private/admin/users-page';
 import ButtonsPage from './_pages/private/examples/buttons-page';
@@ -12,6 +13,9 @@ import InputsPage from './_pages/private/examples/inputs-page';
 import CardTabsPage from './_pages/private/examples/tabs/card-tabs-page';
 import PageTabsPage from './_pages/private/examples/tabs/page-tabs-page';
 import TextsPage from './_pages/private/examples/texts-page';
+import PasswordPage from './_pages/private/settings/password-page';
+import ProfilePage from './_pages/private/settings/profile/profile-page';
+import ThemePage from './_pages/private/settings/theme-page';
 import LoginPage from './_pages/public/login/login-page';
 import useAuthUserStore from './_stores/auth-user.store';
 
@@ -119,14 +123,26 @@ const App = () => {
           ],
         },
 
-        // profile
+        // settings
         {
-          path: 'profile',
-          element: <MainLayout />,
+          path: 'settings',
+          element: <SettingsLayout />,
           children: [
             {
               index: true,
-              element: <h1>Profile</h1>,
+              element: <Navigate to="profile" replace />,
+            },
+            {
+              path: 'profile',
+              element: <ProfilePage />,
+            },
+            {
+              path: 'password',
+              element: <PasswordPage />,
+            },
+            {
+              path: 'theme',
+              element: <ThemePage />,
             },
           ],
         },

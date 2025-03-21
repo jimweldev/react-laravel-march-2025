@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Helpers\QueryHelper;
 use App\Models\User;
 
@@ -74,7 +75,9 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request, $id) {
+        $authUser = $request->user();
+
         try {
             $user = User::find($id);
 
@@ -85,9 +88,8 @@ class UserController extends Controller
             }
 
             // do not delete if the user is me
-            if ($user->id == auth()->user()->id) {
+            if ($user->id == $authUser->id) {
                 return response()->json([
-                    'user' => auth()->user(),
                     'message' => 'You cannot delete your own account.',
                 ], 400);
             }
@@ -263,6 +265,117 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred. Kindly check all the parameters provided. ' . $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function changePassword(Request $request, $id) {
+        try {
+            $currentPassword = $request->input('current_password');
+            $newPassword = $request->input('new_password');
+            $confirmNewPassword = $request->input('confirm_new_password');
+
+            if (!$currentPassword || !$newPassword || !$confirmNewPassword) {
+                return response()->json([
+                    'message' => 'All fields are required.',
+                ], 400);
+            }
+
+            if ($newPassword !== $confirmNewPassword) {
+                return response()->json([
+                   'message' => 'New passwords do not match.',
+                ], 400);
+            }
+
+            // check if the current password is correct
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User not found.',
+                ], 404);
+            }
+
+            if (!Hash::check($currentPassword, $user->password)) {
+                return response()->json([
+                   'message' => 'Current password is incorrect.',
+                ], 400); // Add the 400 status code here
+            }
+
+            $user->password = Hash::make($newPassword);
+            $user->save();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function updateProfile(Request $request, $id) {
+        try {
+            $user = User::find($id);
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+            $user->update($request->all());
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function updateProfileAvatar(Request $request, $id) {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+
+            // Ensure the avatar is present
+            $avatarData = $request->input('avatar');
+            if (!$avatarData) {
+                return response()->json(['message' => 'No avatar data provided'], 400);
+            }
+
+            // Extract the Base64 content
+            $data = explode(';base64,', $avatarData);
+            if (count($data) !== 2) {
+                return response()->json(['message' => 'Invalid avatar format'], 400);
+            }
+
+            $imageExt = explode('/', mime_content_type($avatarData))[1];
+            $avatarContent = base64_decode($data[1]);
+
+            if (!$avatarContent) {
+                return response()->json(['message' => 'Failed to decode avatar'], 400);
+            }
+
+            // Generate a unique file name and store it
+            $avatarName = uniqid() . '.' . $imageExt;
+            Storage::disk('public')->put('avatars/' . $avatarName, $avatarContent);
+
+            // Delete old avatar if exists
+            if ($user->avatar) {
+                Storage::disk('public')->delete('avatars/' . $user->avatar);
+            }
+
+            // Update user avatar path
+            $user->avatar = $avatarName;
+            $user->save();
+
+            return response()->json([
+                'avatar' => $avatarName,
+                'message' => 'Avatar updated successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
             ], 400);
         }
     }

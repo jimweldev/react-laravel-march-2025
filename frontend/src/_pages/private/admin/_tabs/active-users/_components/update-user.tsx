@@ -287,11 +287,7 @@ const UpdateUser = ({
               </DialogBody>
 
               <DialogFooter className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => setOpen(false)}
-                >
+                <Button variant="outline" onClick={() => setOpen(false)}>
                   Close
                 </Button>
                 <Button type="submit" disabled={isLoadingUpdateItem}>

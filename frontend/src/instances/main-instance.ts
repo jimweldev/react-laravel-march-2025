@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthUserStore from '@/_stores/auth-user.store';
 
 const mainInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 mainInstance.interceptors.request.use(

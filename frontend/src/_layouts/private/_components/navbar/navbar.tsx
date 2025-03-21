@@ -10,6 +10,7 @@ import { Link } from 'react-router';
 import useAuthUserStore from '@/_stores/auth-user.store';
 import fallbackImage from '@/assets/images/default-avatar.png';
 import ReactImage from '@/components/images/react-image';
+import ThemeToggle from '@/components/theme/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -25,7 +26,7 @@ interface NavbarProps {
   setIsSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const Navbar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: NavbarProps) => {
-  const { clearAuthUser } = useAuthUserStore();
+  const { user, clearAuthUser } = useAuthUserStore();
 
   return (
     <div className="bg-card flex items-center justify-between gap-4 border-b p-3">
@@ -48,30 +49,35 @@ const Navbar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: NavbarProps) => {
 
       {/* profile */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          {/* messages */}
-          <Button variant="ghost" size="icon">
-            <FaRegMessage />
-          </Button>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {/* messages */}
+            <Button variant="ghost" size="icon">
+              <FaRegMessage />
+            </Button>
 
-          {/* notifications */}
-          <Button variant="ghost" size="icon">
-            <FaRegBell />
-          </Button>
+            {/* notifications */}
+            <Button variant="ghost" size="icon">
+              <FaRegBell />
+            </Button>
+          </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             {/* avatar */}
             <div className="outline-primary border-card flex aspect-square h-8 cursor-pointer items-center overflow-hidden rounded-full border-1 outline-2 select-none">
               <ReactImage
-                className="h-full w-full object-cover"
-                src=""
+                className="pointer-events-none h-full w-full object-cover"
+                src={
+                  `${import.meta.env.VITE_STORAGE_BASE_URL}/avatars/${user?.avatar}` ||
+                  fallbackImage
+                }
                 fallback={fallbackImage}
               />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="text-muted-foreground mx-1 w-50">
-            <Link to="/profile">
+            <Link to="/settings/profile">
               <DropdownMenuItem>
                 <FaUser className="text-inherit" />
                 Profile

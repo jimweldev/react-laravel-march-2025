@@ -18,7 +18,7 @@ const buttonVariants = cva(
           'bg-warning text-warning-foreground shadow-xs hover:bg-warning/90 focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40',
         info: 'bg-info text-info-foreground shadow-xs hover:bg-info/90 focus-visible:ring-info/20 dark:focus-visible:ring-info/40',
         outline:
-          'border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
+          'border border-input shadow-xs hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
@@ -45,6 +45,7 @@ function Button({
   variant,
   size,
   asChild = false,
+  type = 'button',
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
@@ -56,6 +57,7 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      type={type}
       {...props}
     />
   );

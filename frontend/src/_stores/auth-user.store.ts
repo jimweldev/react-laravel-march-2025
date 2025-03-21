@@ -5,6 +5,7 @@ import { User } from '@/_types/user';
 interface AuthUserStoreProps {
   user: User | null;
   token: string | null;
+  setUser: (user: User) => void;
   setAuthUser: (user: User, token: string) => void;
   clearAuthUser: () => void;
 }
@@ -14,6 +15,7 @@ const useAuthUserStore = create<AuthUserStoreProps>()(
     set => ({
       user: null,
       token: null,
+      setUser: user => set({ user }),
       setAuthUser: (user, token) => set({ user, token }),
       clearAuthUser: () => set({ user: null, token: null }),
     }),

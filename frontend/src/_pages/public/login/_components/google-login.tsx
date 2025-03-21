@@ -43,7 +43,6 @@ const GoogleLogin = () => {
     <Button
       variant="outline"
       className="w-full"
-      type="button"
       disabled={isLoading}
       onClick={() => login()}
     >

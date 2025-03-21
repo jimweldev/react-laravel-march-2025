@@ -1,6 +1,4 @@
 import VerticalScrollbar from '@/components/scrollbars/vertical-scrollbar';
-import ThemeToggle from '@/components/theme/theme-toggle';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import SidebarLink from './_components/sidebar-link';
 import SidebarSubLink from './_components/sidebar-sub-link';
 
@@ -20,14 +18,14 @@ interface SidebarLinkItem {
 
 // Define the structure of sidebar sections
 export interface SidebarSection {
-  header: string;
+  header?: string;
   links: SidebarLinkItem[];
 }
 
 const Sidebar = ({ isSidebarCollapsed, sidebarSections }: SidebarProps) => {
   return (
     <div
-      className={`bg-sidebar text-sidebar-foreground flex-[0_0_250px] overflow-hidden shadow transition-all duration-300 ease-in-out ${
+      className={`bg-sidebar text-sidebar-foreground flex-[0_0_250px] overflow-hidden border-r shadow transition-all duration-300 ease-in-out ${
         isSidebarCollapsed ? 'ml-0 lg:ml-[-250px]' : 'ml-[-250px] lg:ml-0'
       }`}
     >
@@ -40,7 +38,9 @@ const Sidebar = ({ isSidebarCollapsed, sidebarSections }: SidebarProps) => {
         {sidebarSections.map((section, sectionIndex) => (
           <div key={sectionIndex}>
             {/* Sidebar Section Header */}
-            <h4 className="pt-4 pb-1 pl-4 text-xs">{section.header}</h4>
+            {section.header ? (
+              <h4 className="pt-4 pb-1 pl-4 text-xs">{section.header}</h4>
+            ) : null}
 
             {section.links.map((link, index) => (
               <div key={index}>
@@ -65,7 +65,6 @@ const Sidebar = ({ isSidebarCollapsed, sidebarSections }: SidebarProps) => {
             ))}
           </div>
         ))}
-        <ThemeToggle />
       </VerticalScrollbar>
       {/* </ScrollArea> */}
     </div>
