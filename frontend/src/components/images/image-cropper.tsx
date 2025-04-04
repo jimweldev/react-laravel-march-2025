@@ -1,63 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
+import { Slider } from '../ui/slider';
+
+interface ImageCropperProps {
+  imageSource: string | null;
+  onCropComplete: (croppedImage: string) => void;
+  aspectRatio?: number;
+}
+
+interface CroppedAreaPixels {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 const ImageCropper = ({
+  imageSource,
   onCropComplete,
   aspectRatio = 1 / 1,
-}: {
-  onCropComplete: (croppedImageUrl: string) => void;
-  aspectRatio?: number;
-}) => {
-  const [cropPosition, setCropPosition] = useState({ x: 0, y: 0 });
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [imageSource, setImageSource] = useState<string | null>(null);
-
+}: ImageCropperProps) => {
   const MIN_ZOOM = 1;
   const MAX_ZOOM = 10;
 
-  const handleCropComplete = async (_: any, croppedAreaPixels: any) => {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+
+  useEffect(() => {
+    if (!imageSource) {
+      setZoom(1);
+    }
+  }, [imageSource]);
+
+  const handleCropComplete = async (
+    _: unknown,
+    croppedAreaPixels: CroppedAreaPixels,
+  ) => {
     try {
       const croppedResult = await generateCroppedImage(
         imageSource!,
         croppedAreaPixels,
       );
       onCropComplete(croppedResult);
-    } catch (error) {
+    } catch (_) {
       toast.error('Failed to crop image');
     }
   };
 
-  const handleZoomChange = (newZoomLevel: number) => {
-    setZoomLevel(newZoomLevel);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Check if the selected file is an image
-    if (!file.type.startsWith('image/')) {
-      e.target.value = '';
-      toast.error('Please select a valid image.');
-      return;
-    }
-
-    // GIFs are not supported
-    if (file.type === 'image/gif') {
-      e.target.value = '';
-      toast.error('GIFs are not supported.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => setImageSource(reader.result as string);
-    reader.readAsDataURL(file);
-  };
-
-  const generateCroppedImage = (imageSource: string, cropArea: any) => {
+  const generateCroppedImage = (
+    imageSource: string,
+    cropArea: CroppedAreaPixels,
+  ) => {
     return new Promise<string>((resolve, reject) => {
       const imageElement = new Image();
       imageElement.src = imageSource;
@@ -92,46 +86,35 @@ const ImageCropper = ({
   };
 
   return (
-    <div className="space-y-3">
+    <>
       {imageSource ? (
-        <>
+        <div className="space-y-3">
           <div className="relative aspect-square border-4">
             <Cropper
               image={imageSource}
-              crop={cropPosition}
-              zoom={zoomLevel}
+              crop={crop}
+              zoom={zoom}
               aspect={aspectRatio}
-              onCropChange={setCropPosition}
+              onCropChange={setCrop}
               onCropComplete={handleCropComplete}
-              onZoomChange={handleZoomChange}
-              minZoom={MIN_ZOOM}
-              maxZoom={MAX_ZOOM}
+              onZoomChange={setZoom}
             />
           </div>
 
           <Slider
-            value={[zoomLevel * 10]}
+            value={[zoom * 10]}
             max={MAX_ZOOM * 10}
             min={MIN_ZOOM * 10}
             step={1}
-            onValueChange={value => setZoomLevel(value[0] / 10)}
+            onValueChange={value => setZoom(value[0] / 10)}
           />
-        </>
+        </div>
       ) : (
-        <div className="border-4 px-3 py-24">
-          <p className="text-muted-foreground text-center text-sm">
-            No image selected
-          </p>
+        <div className="border-destructive bg-muted text-muted-foreground relative border-4 p-3">
+          <p className="text-center">Select an image below</p>
         </div>
       )}
-
-      <Input
-        type="file"
-        accept="image/*"
-        inputSize="sm"
-        onChange={handleFileChange}
-      />
-    </div>
+    </>
   );
 };
 

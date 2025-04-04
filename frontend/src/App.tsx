@@ -5,7 +5,9 @@ import MainLayout from './_layouts/private/main/main-layout';
 import PrivateLayout from './_layouts/private/private-layout';
 import SettingsLayout from './_layouts/private/settings/settings-layout';
 import PublicLayout from './_layouts/public/public-layout';
-import UsersPage from './_pages/private/admin/users-page';
+import DashboardPage from './_pages/private/admin/dashboard/dashboard-page';
+import RbacPage from './_pages/private/admin/rbac/rbac-page';
+import UsersPage from './_pages/private/admin/users/users-page';
 import ButtonsPage from './_pages/private/examples/buttons-page';
 import CardsPage from './_pages/private/examples/cards-page';
 import EditorPage from './_pages/private/examples/editor-page';
@@ -64,7 +66,7 @@ const App = () => {
           children: [
             {
               index: true,
-              element: <h1>Admin</h1>,
+              element: <DashboardPage />,
             },
             {
               path: 'users',
@@ -78,6 +80,10 @@ const App = () => {
                   element: <UsersPage />,
                 },
               ],
+            },
+            {
+              path: 'rbac',
+              element: <RbacPage />,
             },
           ],
         },

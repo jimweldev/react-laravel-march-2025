@@ -24,7 +24,6 @@ const GoogleLogin = () => {
             return `Logged in successfully!`;
           },
           error: error => {
-            console.log(error);
             return (
               error.response?.data?.message ||
               error.message ||

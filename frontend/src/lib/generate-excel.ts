@@ -1,6 +1,6 @@
 import * as XLSX from 'xlsx';
 
-export function generateExcel(headers: string[], fileName: string) {
+export function generateExcel(headers: string[], fileName: string): void {
   const worksheetData = [headers];
 
   // Create a worksheet from the data

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaChartPie } from 'react-icons/fa6';
+import { FaHome } from 'react-icons/fa';
 import { Outlet } from 'react-router';
 import Footer from '../_components/footer/footer';
 import Navbar from '../_components/navbar/navbar';
@@ -10,11 +10,10 @@ const MainLayout = () => {
 
   const sidebarSections: SidebarSection[] = [
     {
-      header: 'General',
       links: [
         {
-          icon: <FaChartPie />,
-          title: 'Dashboard',
+          icon: <FaHome />,
+          title: 'Home',
           to: '/',
         },
       ],

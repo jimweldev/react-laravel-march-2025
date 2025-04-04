@@ -1,3 +1,5 @@
+import { RbacUserRole } from './rbac-user-role';
+
 export interface User {
   id?: number;
   first_name?: string;
@@ -8,6 +10,7 @@ export interface User {
   email?: string;
   is_admin?: boolean;
   account_type?: string;
+  rbac_user_roles?: RbacUserRole[];
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;

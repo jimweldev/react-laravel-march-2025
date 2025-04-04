@@ -7,48 +7,34 @@ const ThemePage = () => {
   const { theme, setTheme } = useThemeStore();
 
   return (
-    <div>
+    <>
       <div className="mb-3">
         <PageHeader>Theme</PageHeader>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div
+        className={cn(
+          'relative flex h-12 w-24 cursor-pointer items-center rounded-full border-2 transition-all',
+          theme === 'light'
+            ? 'border-yellow-400 bg-yellow-200'
+            : 'border-purple-500 bg-purple-900',
+        )}
+        onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      >
         <div
           className={cn(
-            'user-select-none flex h-20 w-40 cursor-pointer items-center justify-center rounded-lg border-2 border-yellow-400 bg-yellow-100 text-yellow-600',
+            'absolute left-2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition-all',
+            theme === 'dark' ? 'translate-x-12' : '',
           )}
-          onClick={() => setTheme('light')}
         >
-          <div className={`flex flex-col items-center justify-center gap-2`}>
-            <FaSun
-              className={`transition-all duration-300 ${theme === 'light' ? 'scale-200' : ''}`}
-            />
-            <p
-              className={`text-sm font-semibold ${theme === 'light' ? 'underline' : ''}`}
-            >
-              Light
-            </p>
-          </div>
-        </div>
-        <div
-          className={cn(
-            'user-select-none flex h-20 w-40 cursor-pointer items-center justify-center rounded-lg border-2 border-purple-500 bg-purple-800 text-purple-200',
+          {theme === 'light' ? (
+            <FaSun className="text-yellow-500" />
+          ) : (
+            <FaMoon className="text-purple-500" />
           )}
-          onClick={() => setTheme('dark')}
-        >
-          <div className={`flex flex-col items-center justify-center gap-2`}>
-            <FaMoon
-              className={`transition-all duration-300 ${theme === 'dark' ? 'scale-200' : ''}`}
-            />
-            <p
-              className={`text-sm font-semibold ${theme === 'dark' ? 'underline' : ''}`}
-            >
-              Dark
-            </p>
-          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

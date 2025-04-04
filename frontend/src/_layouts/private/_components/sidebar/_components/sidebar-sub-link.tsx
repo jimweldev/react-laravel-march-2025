@@ -2,11 +2,10 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import { NavLink } from 'react-router';
 
 interface SidebarSubLinkProps extends React.ComponentProps<typeof NavLink> {
-  icon: any;
   title: string;
 }
 
-const SidebarSubLink = ({ icon, title, ...props }: SidebarSubLinkProps) => {
+const SidebarSubLink = ({ title, ...props }: SidebarSubLinkProps) => {
   return (
     <NavLink
       className={({ isActive }) => {

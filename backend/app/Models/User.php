@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\RbacUserRole;
 
 class User extends Authenticatable
 {
@@ -25,9 +26,17 @@ class User extends Authenticatable
         'updated_at',
     ];
 
+    public function rbac_user_roles() {
+        return $this->hasMany(RbacUserRole::class, 'user_id', 'id');
+    }
+
+    public function rbac_roles() {
+        return $this->belongsToMany(RbacRole::class, 'rbac_user_roles', 'user_id', 'rbac_role_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
-     *
+     *`
      * @var list<string>
      */
     protected $hidden = [

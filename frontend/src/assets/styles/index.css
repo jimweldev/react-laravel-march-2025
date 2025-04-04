@@ -313,3 +313,83 @@ div.horizontal-scrollbar::-webkit-scrollbar-thumb {
 .react-quill-content li[data-list='bullet'] {
   @apply list-disc;
 }
+
+.react-select-container {
+  overflow: visible;
+}
+
+.react-select__value-container {
+  @apply !px-[10px];
+}
+
+.react-select__control {
+  @apply !border-input !min-h-9 !rounded-md !border !text-sm !shadow-xs;
+  /* min-height: 35px !important; */
+  height: 100% !important;
+}
+
+.react-select__control--is-focused {
+  @apply !border-ring !ring-ring/50 !ring-[3px];
+  outline: none !important;
+}
+
+.react-select__indicators {
+  height: auto !important;
+}
+
+.react-select__indicators > div {
+  @apply !p-1;
+}
+
+/* .react-select-container {
+  overflow: visible;
+}
+
+.react-select__control {
+  @apply !border-input !rounded-md !border !text-sm !shadow-xs;
+  min-height: 35px !important;
+  height: 100% !important;
+}
+
+.react-select__control--is-focused {
+  @apply ring-ring focus-visible:border-ring focus-visible:ring-ring/50 ring-1 outline-none focus-visible:ring-[3px];
+  outline: none !important;
+}
+
+.react-select__indicators {
+  height: auto !important;
+}
+
+.react-select__indicators > div {
+  padding: 6px !important;
+}
+
+.react-select__option {
+  padding: 5px 10px !important;
+} */
+
+/* Scrollbar Styling */
+.react-select__menu-list {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) #f1f1f1;
+}
+
+.react-select__menu-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.react-select__menu-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.react-select__menu-list::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary));
+  border-radius: 4px;
+  border: 2px solid #f1f1f1;
+}
+
+.react-select__menu-list::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3;
+}

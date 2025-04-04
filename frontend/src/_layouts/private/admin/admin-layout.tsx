@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaChartPie } from 'react-icons/fa6';
+import { FaChartPie, FaUsers, FaUserShield } from 'react-icons/fa6';
 import { Outlet } from 'react-router';
 import Footer from '../_components/footer/footer';
 import Navbar from '../_components/navbar/navbar';
@@ -19,9 +19,14 @@ const AdminLayout = () => {
           end: true,
         },
         {
-          icon: <FaChartPie />,
+          icon: <FaUsers />,
           title: 'Users',
           to: '/admin/users',
+        },
+        {
+          icon: <FaUserShield />,
+          title: 'RBAC',
+          to: '/admin/rbac',
         },
       ],
     },

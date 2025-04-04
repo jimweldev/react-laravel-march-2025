@@ -11,7 +11,7 @@ const PrivateLayout = () => {
     if (!token) {
       navigate('/login', { replace: true });
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return <Outlet />;
 };

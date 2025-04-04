@@ -11,7 +11,7 @@ const PublicLayout = () => {
     if (token) {
       navigate('/', { replace: true });
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return <Outlet />;
 };

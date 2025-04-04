@@ -8,53 +8,94 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { Table, TableBody, TableCell, TableRow } from '../ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../ui/table';
+import DataTableHead from './data-table-head';
 
-interface DataTableProps<T> {
-  data?: T[];
-  setLimit: (limit: string) => void;
-  setCurrentPage: (page: number) => void;
-  setSearchTerm: (searchTerm: string) => void;
-  limit: string;
-  currentPage: number;
-  searchTerm: string;
+interface PaginationState<T> {
+  data?: {
+    records: T[];
+    info: Info;
+  };
   isLoading: boolean;
   isFetching: boolean;
   error: Error | null;
-  info?: Info;
-  header: React.ReactNode;
+  limit: string;
+  sort: string;
+  currentPage: number;
+  searchTerm: string;
+  setLimit: (limit: string) => void;
+  setSort: (sort: string) => void;
+  setCurrentPage: (page: number) => void;
+  setSearchTerm: (searchTerm: string) => void;
+}
+
+export interface DataTableColumns {
+  label: string;
+  column?: string;
+}
+
+interface DataTableProps<T> {
+  pagination?: PaginationState<T>; // Make `pagination` optional for safety
+  columns: DataTableColumns[];
   actions?: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const DataTable = <T,>({
-  data,
-  setLimit,
-  setCurrentPage,
-  setSearchTerm,
-  limit,
-  currentPage,
-  searchTerm,
-  isLoading,
-  isFetching,
-  error,
-  info,
-  header,
+  pagination = {
+    // Provide default values for the pagination state
+    data: { records: [], info: { total: 0, pages: 1 } },
+    isLoading: false,
+    isFetching: false,
+    error: null,
+    limit: '10',
+    sort: '',
+    currentPage: 1,
+    searchTerm: '',
+    setLimit: () => {},
+    setSort: () => {},
+    setCurrentPage: () => {},
+    setSearchTerm: () => {},
+  },
+  columns,
   actions,
   children,
 }: DataTableProps<T>) => {
-  const handlePageChange = ({ selected }: { selected: number }) => {
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    limit,
+    sort,
+    currentPage,
+    searchTerm,
+    setLimit,
+    setSort,
+    setCurrentPage,
+    setSearchTerm,
+  } = pagination;
+
+  const records = data?.records || [];
+  const info = data?.info;
+
+  const handlePageChange = ({ selected }: { selected: number }) =>
     setCurrentPage(selected + 1);
-  };
 
   return (
     <div className="space-y-3">
       <div className="flex flex-col items-center justify-between gap-2 @xl/main:flex-row">
-        {actions ? <div>{actions}</div> : <div />}
+        {actions && <div>{actions}</div>}
         <div className="flex flex-col items-center justify-between gap-2 @lg/main:flex-row">
           <Input
             placeholder="Search..."
@@ -78,39 +119,64 @@ const DataTable = <T,>({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Entries</SelectLabel>
-                {[10, 25, 50, 100].map(value => (
-                  <SelectItem key={value} value={value.toString()}>
-                    {value}
-                  </SelectItem>
-                ))}
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="25">25</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
       </div>
+
       <HorizontalScrollbar>
         <Table className={`border-t ${isFetching ? 'border-primary' : ''}`}>
-          {header}
+          <TableHeader className="select-none">
+            <TableRow>
+              {columns.map(({ label, column }) =>
+                column ? (
+                  <DataTableHead
+                    key={label}
+                    sort={sort}
+                    setSort={setSort}
+                    setCurrentPage={setCurrentPage}
+                    label={label}
+                    column={column}
+                  />
+                ) : (
+                  <TableHead key={label}>{label}</TableHead>
+                ),
+              )}
+            </TableRow>
+          </TableHeader>
           <TableBody className="border-b">
             {children}
-            {!isFetching && !error && data?.length === 0 && (
+            {!isFetching && !error && records.length === 0 && (
               <TableRow>
-                <TableCell colSpan={100} className="text-center font-medium">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium"
+                >
                   No data found
                 </TableCell>
               </TableRow>
             )}
-            {!isFetching && error && (
+            {error && (
               <TableRow>
-                <TableCell colSpan={100} className="text-center font-medium">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium"
+                >
                   Error loading data
                 </TableCell>
               </TableRow>
             )}
             {isLoading && (
               <TableRow>
-                <TableCell colSpan={100} className="text-center font-medium">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center font-medium"
+                >
                   Loading...
                 </TableCell>
               </TableRow>
@@ -118,9 +184,14 @@ const DataTable = <T,>({
           </TableBody>
         </Table>
       </HorizontalScrollbar>
+
       <div className="flex flex-col items-center justify-between gap-2 @2xl/main:flex-row">
         <span className="text-muted-foreground text-sm">
-          {`Showing ${(data?.length || 0) > 0 ? (currentPage - 1) * Number(limit) + 1 : 0} to ${(currentPage - 1) * Number(limit) + (data ? data.length : 0)} of ${data ? info?.total || 0 : 0} entries`}
+          {`Showing ${
+            records.length > 0 ? (currentPage - 1) * Number(limit) + 1 : 0
+          } to ${(currentPage - 1) * Number(limit) + records.length} of ${
+            info?.total || 0
+          } entries`}
         </span>
         <ReactPaginate
           containerClassName="pagination pagination-sm"

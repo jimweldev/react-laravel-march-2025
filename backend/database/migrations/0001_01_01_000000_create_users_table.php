@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('is_admin')->default(false);
-            $table->string('account_type')->default('main');
+            $table->string('account_type')->default('Main');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

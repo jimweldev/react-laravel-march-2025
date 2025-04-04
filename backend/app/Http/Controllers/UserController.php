@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\QueryHelper;
+use App\Models\RbacUserRole;
 use App\Models\User;
 
 class UserController extends Controller
@@ -32,6 +33,12 @@ class UserController extends Controller
 
     public function show($id) {
         $record = User::find($id);
+
+        if (!$record) {
+            return response()->json([
+               'message' => 'User not found.',
+            ], 404);
+        }
 
         return response()->json($record);
     }
@@ -64,6 +71,13 @@ class UserController extends Controller
     public function update(Request $request, $id) {
         try {
             $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                   'message' => 'User not found.',
+                ], 404);
+            }
+            
             $user->update($request->all());
 
             return response()->json($user);
@@ -114,6 +128,30 @@ class UserController extends Controller
             // Apply query filters
             $type = 'paginate';
             QueryHelper::apply($query, $queryParams, $type);
+
+            // check if params has `has`
+            if (isset($queryParams['has'])) {
+                $has = explode(',', $queryParams['has']);
+
+                foreach ($has as $h) {
+                    $query->whereHas($h);
+                }
+            }
+
+            // check if params has `with`
+            if (isset($queryParams['with'])) {
+                $with = explode(',', $queryParams['with']);
+
+                // check if `with` has `permissions`
+                if (in_array('rbac_user_roles', $with)) {
+                    $query->with(['rbac_user_roles' => function ($query) {
+                        $query->select('id', 'user_id', 'rbac_role_id')
+                            ->with(['rbac_role' => function ($query) {
+                                $query->select('id', 'label');
+                            }]);
+                    }]);
+                }
+            }
 
             // search
             if ($request->has('search')) {
@@ -269,6 +307,101 @@ class UserController extends Controller
         }
     }
 
+    // USER ROLES
+    public function getUserRoles($id) {
+        $record = User::where('id', $id)
+            ->with(['rbac_user_roles' => function ($query) {
+                $query->select('id', 'user_id', 'rbac_role_id')
+                    ->with(['rbac_role' => function ($query) {
+                        $query->select('id', 'label', 'value');
+                    }]);
+            }])
+            ->first();
+
+        if (!$record) {
+            return response()->json([
+               'message' => 'Record not found.',
+            ], 404);
+        }
+
+        return response()->json($record, 200);
+    }
+
+    public function addUserRoles(Request $request, $id) {
+        try {
+            // check if role already exists
+            $roleExists = RbacUserRole::where('user_id', $id)->exists();
+            if ($roleExists) {
+                return response()->json([
+                    'message' => 'User already exists'
+                ], 400);
+            }
+
+            $records =[];
+
+            // create role
+            $roleIds = $request->input('role_ids');
+            foreach ($roleIds as $roleId) {
+                $role = RbacUserRole::create([
+                    'user_id' => $id,
+                    'rbac_role_id' => $roleId
+                ]);
+
+                // append to records
+                array_push($records, $role);
+            }
+
+            return response()->json([
+                'data' => $records
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error creating role'], 500);
+        }
+    }
+
+    public function updateUserRoles(Request $request, $id) {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'message' => 'User not found.',
+                ], 404);
+            }
+
+            // Sync user roles
+            $user->rbac_roles()->sync($request->input('role_ids', []));
+
+            return response()->json([
+                'message' => 'User roles updated successfully.',
+                'roles' => $user->rbac_roles, // Load updated roles
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error updating user roles',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function deleteUserRoles($id) {
+        try {
+            $records = RbacUserRole::where('user_id', $id)->delete();
+            return response()->json([
+                'records' => $records,
+                'message' => 'User roles deleted successfully.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred.',
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    // SETTINGS
     public function changePassword(Request $request, $id) {
         try {
             $currentPassword = $request->input('current_password');

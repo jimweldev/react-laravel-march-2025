@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-// import { toast } from 'sonner';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import useAuthUserStore from '@/_stores/auth-user.store';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { mainInstance } from '@/instances/main-instance';
 import GoogleLogin from './_components/google-login';
 
 const FormSchema = z.object({
@@ -46,27 +47,21 @@ const LoginPage = () => {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
 
-    console.log(data);
-
-    // toast.promise(mainInstance.post('/api/auth/login', data), {
-    //   loading: 'Loading...',
-    //   success: response => {
-    //     setAuthUser(response.data.user, response.data.access_token);
-    //     return `Logged in successfully!`;
-    //   },
-    //   error: error => {
-    //     return (
-    //       error.response?.data?.message || error.message || 'An error occurred'
-    //     );
-    //   },
-    //   finally: () => {
-    //     setIsLoading(false);
-    //   },
-    // });
-    setAuthUser(
-      { id: 1, first_name: 'John', email: 'Ry6mG@example.com' },
-      'token',
-    );
+    toast.promise(mainInstance.post('/api/auth/login', data), {
+      loading: 'Loading...',
+      success: response => {
+        setAuthUser(response.data.user, response.data.access_token);
+        return `Logged in successfully!`;
+      },
+      error: error => {
+        return (
+          error.response?.data?.message || error.message || 'An error occurred'
+        );
+      },
+      finally: () => {
+        setIsLoading(false);
+      },
+    });
   };
 
   return (

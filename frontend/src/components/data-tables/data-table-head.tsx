@@ -22,14 +22,18 @@ const DataTableHead: React.FC<DataTableHeadProps> = ({
   const isDescending = sort.startsWith('-');
 
   const handleSetSort = () => {
-    const newSort = isCurrentSort
-      ? isDescending
-        ? column
-        : `-${column}`
-      : column;
+    let newSort = column;
+    if (isCurrentSort) {
+      newSort = isDescending ? column : `-${column}`;
+    }
     setSort(newSort);
     setCurrentPage(1);
   };
+
+  let chevronClassName = 'hidden';
+  if (isCurrentSort) {
+    chevronClassName = isDescending ? 'rotate-180' : '';
+  }
 
   return (
     <TableHead
@@ -39,7 +43,7 @@ const DataTableHead: React.FC<DataTableHeadProps> = ({
       <div className="flex items-center justify-between">
         <span>{label}</span>
         <ChevronUp
-          className={`transform transition-transform duration-200 ${isCurrentSort ? (isDescending ? 'rotate-180' : '') : 'hidden'}`}
+          className={`transform transition-transform duration-200 ${chevronClassName}`}
           size={16}
         />
       </div>

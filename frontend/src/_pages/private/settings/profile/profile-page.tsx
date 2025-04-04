@@ -88,9 +88,9 @@ const ProfilePage = () => {
             <CardHeader>
               <div className="flex justify-center">
                 <div className="relative aspect-square w-24">
-                  <div className="outline-primary border-card flex items-center overflow-hidden rounded-full border-1 outline-2 select-none">
+                  <div className="outline-primary border-card flex size-full items-center overflow-hidden rounded-full border-1 outline-2 select-none">
                     <ReactImage
-                      className="pointer-events-none h-full w-full object-cover"
+                      className="pointer-events-none size-full object-cover"
                       src={`${import.meta.env.VITE_STORAGE_BASE_URL}/avatars/${user?.avatar}`}
                       fallback={fallbackImage}
                     />

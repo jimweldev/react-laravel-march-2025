@@ -10,7 +10,6 @@ import { Link } from 'react-router';
 import useAuthUserStore from '@/_stores/auth-user.store';
 import fallbackImage from '@/assets/images/default-avatar.png';
 import ReactImage from '@/components/images/react-image';
-import ThemeToggle from '@/components/theme/theme-toggle';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
+import { getImageUrl } from '@/lib/get-image-url';
 import NavbarLinks from './_components/navbar-links';
 
 interface NavbarProps {
@@ -68,10 +68,11 @@ const Navbar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: NavbarProps) => {
             <div className="outline-primary border-card flex aspect-square h-8 cursor-pointer items-center overflow-hidden rounded-full border-1 outline-2 select-none">
               <ReactImage
                 className="pointer-events-none h-full w-full object-cover"
-                src={
-                  `${import.meta.env.VITE_STORAGE_BASE_URL}/avatars/${user?.avatar}` ||
-                  fallbackImage
-                }
+                src={getImageUrl(
+                  `${import.meta.env.VITE_STORAGE_BASE_URL}/avatars`,
+                  user?.avatar,
+                  fallbackImage,
+                )}
                 fallback={fallbackImage}
               />
             </div>

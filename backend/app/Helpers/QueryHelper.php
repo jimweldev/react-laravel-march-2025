@@ -27,7 +27,7 @@ class QueryHelper {
             if (is_array($value)) {
                 self::applyArrayFilters($query, $key, $value);
             } else {
-                if ($type === 'default' || ($type === 'paginate' && !in_array($key, ['limit', 'page', 'search', 'sort']))) {
+                if ($type === 'default' || ($type === 'paginate' && !in_array($key, ['limit', 'page', 'search', 'sort', 'with', 'has']))) {
                     $query->where($key, $value);
                 }
             }

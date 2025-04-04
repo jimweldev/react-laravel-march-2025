@@ -1,24 +1,20 @@
-# Use Node.js for building the frontend
-FROM node:22
-
-# Set working directory
+# Use the latest LTS version of Node.js
+FROM node:22-alpine
+ 
+# Set the working directory inside the container
 WORKDIR /app
-
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install --force
-
-# Copy the rest of the app
+ 
+# Copy package.json and package-lock.json
+COPY package*.json ./
+ 
+# Install dependencies
+RUN npm install
+ 
+# Copy the rest of your application files
 COPY . .
-
-# Build the app
-RUN npm run build
-
-# Serve with a lightweight web server
-FROM nginx:alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 3000
-
-CMD ["nginx", "-g", "daemon off;"]
+ 
+# Expose the port your app runs on
+EXPOSE 5173
+ 
+# Define the command to run your app
+CMD ["npm", "start"]

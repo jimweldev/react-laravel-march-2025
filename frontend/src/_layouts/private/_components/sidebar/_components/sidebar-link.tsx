@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router';
 
 interface SidebarLinkProps extends React.ComponentProps<typeof NavLink> {
-  icon: any;
+  icon: React.ReactNode;
   title: string;
 }
 

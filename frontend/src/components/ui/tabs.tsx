@@ -55,12 +55,12 @@ function TabsList({
 }
 
 const tabsTriggerVariants = cva(
-  'text-sidebar-accent-foreground data-[state=active]:bg-card data-[state=active]:text-card-foreground font-medium px-2 py-1 whitespace-nowrap rounded-md',
+  'data-[state=active]:bg-card data-[state=active]:text-card-foreground font-medium px-2 py-1 whitespace-nowrap rounded-md',
   {
     variants: {
       variant: {
         default: cn(
-          'data-[state=active]:shadow-sm',
+          'data-[state=active]:shadow-sm text-sidebar-accent-foreground',
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring inline-flex items-center justify-center gap-1.5 transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         ),
         outline: cn(
