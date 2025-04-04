@@ -11,8 +11,9 @@ use App\Http\Controllers\SelectController;
 
 Route::post('/auth/login', [AuthController::class, 'loginWithEmail']);
 Route::post('/auth/google-login', [AuthController::class, 'loginWithGoogle']);
+Route::post('/auth/refresh-token', [AuthController::class, 'refreshToken']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('check.token')->group(function () {
     // USERS
     Route::get('/users/paginate', [UserController::class, 'paginate']);
     Route::post('/users/import', [UserController::class, 'import']);

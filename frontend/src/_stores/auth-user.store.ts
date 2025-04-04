@@ -6,6 +6,7 @@ interface AuthUserStoreProps {
   user: User | null;
   token: string | null;
   setUser: (user: User) => void;
+  setToken: (token: string) => void;
   setAuthUser: (user: User, token: string) => void;
   clearAuthUser: () => void;
 }
@@ -16,6 +17,7 @@ const useAuthUserStore = create<AuthUserStoreProps>()(
       user: null,
       token: null,
       setUser: user => set({ user }),
+      setToken: token => set({ token }),
       setAuthUser: (user, token) => set({ user, token }),
       clearAuthUser: () => set({ user: null, token: null }),
     }),
